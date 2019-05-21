@@ -1,12 +1,12 @@
 
+// INITIALIZATIONS
 const express = require('express');
 const app = express();
+const productRoutes = require('./api/routes/products');
 
-app.use((req, res, next) => {
-    res.status(200).json({
-        success: true,
-        message: "It works!"
-    });
-});
+// RUNS
+app.use('/products', productRoutes);
 
+
+// EXPORTING
 module.exports = app;
