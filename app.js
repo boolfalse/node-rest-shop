@@ -13,6 +13,7 @@ mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PASSWORD +
     // useMongoClient: true // under the hood it'll use Mongo DB client for connecting with MongoDB
     useNewUrlParser: true // DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect
 });
+// mongoose.Promise = global.Promise; // For disabling terminal 'deprecated' warnings. NodeJS Promise implementation instead of the mongoose model
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
