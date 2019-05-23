@@ -4,14 +4,14 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const port = process.env.PORT || 3000;
 
-const Model = require('../models/product');
+const Product = require('../models/product');
 
-const model_name = Model.model_name;
-const model_docs = Model.model_docs;
+const model_name = Product.model_name;
+const model_docs = Product.model_docs;
 
 // GET ALL ITEMS
 router.get('/', (req, res, next) => {
-    Model.find()
+    Product.find()
         .select('name price _id')
         // .exec()
         .then(docs => {
@@ -59,7 +59,7 @@ router.get('/', (req, res, next) => {
 // CREATE ITEM
 router.post('/', (req, res, next) => {
 
-    const createdItem = new Model({
+    const createdItem = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price
@@ -97,7 +97,7 @@ router.post('/', (req, res, next) => {
 // GET ITEM BY ID
 router.get('/:itemId', (req, res, next) => {
     const itemId = req.params.itemId;
-    Model.findById(itemId)
+    Product.findById(itemId)
         .select('name price _id')
         // .exec()
         .then(doc => {
@@ -138,7 +138,7 @@ router.get('/:itemId', (req, res, next) => {
 // DELETE ITEM
 router.delete('/:itemId', (req, res, next) => {
     const itemId = req.params.itemId;
-    Model.remove({
+    Product.remove({
         _id: itemId
     })
         // .exec()
@@ -176,7 +176,7 @@ router.patch('/:itemId', (req, res, next) => {
         updateOps[key] = req.body[key];
     }
 
-    Model.update({ _id: itemId }, { $set: updateOps })
+    Product.update({ _id: itemId }, { $set: updateOps })
         // .exec()
         .then(result => {
             res.status(200).json({
