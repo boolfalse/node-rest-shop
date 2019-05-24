@@ -120,9 +120,9 @@ router.get('/:itemId', (req, res, next) => {
                     }
                 });
             } else {
-                res.status(403).json({
+                return res.status(403).json({
                     success: false,
-                    message: "No valid entry found for provided ID!",
+                    message: model_name + ' not found!',
                 });
             }
         })
