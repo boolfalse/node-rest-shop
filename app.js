@@ -15,7 +15,9 @@ mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PASSWORD +
 });
 // mongoose.Promise = global.Promise; // For disabling terminal 'deprecated' warnings. NodeJS Promise implementation instead of the mongoose model
 
+// Middlewares
 app.use(morgan('dev'));
+app.use('/images', express.static('uploads')); //  with this we will have statically/publicly available 'uploads' folder (example: http://localhost:3000/images/1558704580_Chrysanthemum.jpg)
 app.use(bodyParser.urlencoded({
     extended: false // true allows to parse extended body with rich data in it
 }));

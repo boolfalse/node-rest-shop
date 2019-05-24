@@ -14,7 +14,7 @@ const model_docs = Order.model_docs;
 router.get('/', (req, res, next) => {
     Order.find()
         .select('product_id quantity _id')
-        .populate('product_id', 'name price')
+        .populate('product_id', 'name price image')
         // .exec()
         .then(docs => {
             console.log(docs);
@@ -114,7 +114,7 @@ router.get('/:itemId', (req, res, next) => {
     const itemId = req.params.itemId;
     Order.findById(itemId)
         .select('product_id quantity _id')
-        .populate('product_id', 'name price')
+        .populate('product_id', 'name price image')
         // .exec()
         .then(doc => {
             console.log(doc);
