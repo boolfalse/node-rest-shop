@@ -9,7 +9,10 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true, // this will make more optimized DB, but it'll not validate email existing, so we must have email existence checking logic
+        //ss https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript#answer-1373724
+        match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     password: {
         type: String,

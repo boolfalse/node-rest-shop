@@ -53,12 +53,6 @@ router.post('/register', (req, res, next) => {
                                         name: result.name,
                                         email: email, // result.email,
                                         _id: result._id,
-                                        // request: {
-                                        //     description: 'delete_' + model_name,
-                                        //     type: 'DELETE',
-                                        //     url: 'http://localhost:' + port + '/' + model_docs + '/' + result._id,
-                                        //     body: {}
-                                        // }
                                     }
                                 });
                             })
@@ -81,6 +75,26 @@ router.post('/register', (req, res, next) => {
             });
         });
 
+});
+
+// DELETE USER
+router.delete('/:userId', (req, res, next) => {
+    const itemId = req.params.itemId;
+    User.remove({ _id: itemId })
+        .then(result => {
+            res.status(200).json({
+                success: true,
+                message: 'User deleted.',
+                data: result
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                message: err
+            });
+        });
 });
 
 // EXPORTING
