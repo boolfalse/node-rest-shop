@@ -9,8 +9,10 @@ const Order = require('../models/order');
 const model_name = Order.model_name;
 const model_docs = Order.model_docs;
 
+const checkAuth = require('../middlewares/check-auth');
+
 // GET ALL ITEMS
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
     Order.find()
         .select('product_id quantity _id')
         .populate('product_id', 'name price image')
@@ -58,7 +60,7 @@ router.get('/', (req, res, next) => {
 });
 
 // CREATE ITEM
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
 
     let product_id = req.body.product_id;
     Product.findById(product_id)
@@ -109,7 +111,7 @@ router.post('/', (req, res, next) => {
 });
 
 // GET ITEM BY ID
-router.get('/:itemId', (req, res, next) => {
+router.get('/:itemId', checkAuth, (req, res, next) => {
     const itemId = req.params.itemId;
     Order.findById(itemId)
         .select('product_id quantity _id')
@@ -151,7 +153,7 @@ router.get('/:itemId', (req, res, next) => {
 });
 
 // DELETE ITEM
-router.delete('/:itemId', (req, res, next) => {
+router.delete('/:itemId', checkAuth, (req, res, next) => {
     const itemId = req.params.itemId;
     Order.remove({
         _id: itemId
@@ -183,7 +185,7 @@ router.delete('/:itemId', (req, res, next) => {
 });
 
 // UPDATE ITEM
-router.patch('/:itemId', (req, res, next) => {
+router.patch('/:itemId', checkAuth, (req, res, next) => {
     const itemId = req.params.itemId;
     const updateOps = {};
 

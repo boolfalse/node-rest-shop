@@ -35,6 +35,8 @@ const Product = require('../models/product');
 const model_name = Product.model_name;
 const model_docs = Product.model_docs;
 
+const checkAuth = require('../middlewares/check-auth');
+
 // GET ALL ITEMS
 router.get('/', (req, res, next) => {
     Product.find()
@@ -84,7 +86,7 @@ router.get('/', (req, res, next) => {
 });
 
 // CREATE ITEM
-router.post('/', upload.single('image'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('image'), (req, res, next) => {
 
     console.log(req.file);
 
@@ -168,7 +170,7 @@ router.get('/:itemId', (req, res, next) => {
 });
 
 // DELETE ITEM
-router.delete('/:itemId', (req, res, next) => {
+router.delete('/:itemId', checkAuth, (req, res, next) => {
     const itemId = req.params.itemId;
     Product.remove({
         _id: itemId
@@ -201,7 +203,7 @@ router.delete('/:itemId', (req, res, next) => {
 });
 
 // UPDATE ITEM
-router.patch('/:itemId', (req, res, next) => {
+router.patch('/:itemId', checkAuth, (req, res, next) => {
     const itemId = req.params.itemId;
     const updateOps = {};
 
