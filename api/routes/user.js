@@ -77,6 +77,69 @@ router.post('/register', (req, res, next) => {
 
 });
 
+// LOGIN
+router.post('/login', (req, res, next) => {
+
+    let email = req.body.email;
+
+    // also we can use findOne() for getting only first doc
+    User.find({ email: email })
+    // .exec() // for getting back a promise
+        .then(user => { // don't forget that user is a mongo document
+            if (user.length > 0) { // for findOne() we just need to use if(user)
+
+                // the issue of this approach (commented in below), that we open our app to some kind of brute force attack
+                // users can just try out email addresses, and they will at least find out which ones are there and which ones are not
+                // so once they got a list of available email addresses, they could focus on this
+
+                // res.status(422).json({ // 422 - unprocessable entity
+                //     success: false,
+                //     message: 'User doesn\'t exist!'
+                // });
+
+                // for findOne() we just need to use user.password
+                bcrypt.compare(req.body.password, user[0].password,  (err, result) => {
+                    if(err) {
+                        // thrown some error
+                        return res.status(401).json({ // 401 - unauthorized
+                            success: false,
+                            message: 'Auth failed!'
+                        });
+                    }
+
+                    if (result) {
+                        // email and password match (successfully login case)
+                        res.status(200).json({
+                            success: true,
+                            message: 'Auth successful.',
+                        });
+                    } else {
+                        // wrong password
+                        res.status(401).json({ // 401 - unauthorized
+                            success: false,
+                            message: 'Auth failed!'
+                        });
+                    }
+                });
+
+            } else {
+                // have not found user with entered email
+                res.status(409).json({ // 409 - conflict
+                    success: false,
+                    message: 'Auth failed!'
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                message: err
+            });
+        });
+
+});
+
 // DELETE USER
 router.delete('/:userId', (req, res, next) => {
     const itemId = req.params.itemId;
