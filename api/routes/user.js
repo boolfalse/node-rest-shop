@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const model_name = User.model_name;
@@ -109,9 +110,20 @@ router.post('/login', (req, res, next) => {
 
                     if (result) {
                         // email and password match (successfully login case)
+
+                        // jwt.sign(payload, secretOrPrivateKey, [options, callback])
+                        const token = jwt.sign({
+                            // payload data for show user
+                            email: user[0].email,
+                            user_id: user[0]._id,
+                        }, process.env.JWT_PRIVATE_KEY, {
+                            expiresIn: 3600 // 60 * 60 * 24 * 365, "1h"
+                        });
+
                         res.status(200).json({
                             success: true,
                             message: 'Auth successful.',
+                            token: token
                         });
                     } else {
                         // wrong password

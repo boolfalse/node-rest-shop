@@ -1,6 +1,7 @@
 {
   "env": {
     "MONGODB_PASSWORD": "node-shop",
-    "MONGO_ATLAS_PASSWORD": "TPcVJ0cXe5hPgO4v"
+    "MONGO_ATLAS_PASSWORD": "TPcVJ0cXe5hPgO4v",
+    "JWT_PRIVATE_KEY": "SomePrivateKet12"
   }
 }
