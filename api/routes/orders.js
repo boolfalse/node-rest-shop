@@ -4,9 +4,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const port = process.env.PORT || 3000;
 
-const Order = require('../models/order');
 const Product = require('../models/product');
-
+const Order = require('../models/order');
 const model_name = Order.model_name;
 const model_docs = Order.model_docs;
 

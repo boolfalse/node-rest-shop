@@ -32,7 +32,6 @@ const upload = multer({
 });
 
 const Product = require('../models/product');
-
 const model_name = Product.model_name;
 const model_docs = Product.model_docs;
 
