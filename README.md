@@ -32,6 +32,7 @@ npm start
 
 ### TODOs:
 
+* fix module.exports (like for example in bottom of file 'models/user.js')
 * show all users route
 * add status (active/blocked) for models
 * check is record exists, before deleting or updating
