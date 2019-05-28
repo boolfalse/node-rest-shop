@@ -21,7 +21,15 @@ mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PASSWORD +
 // MIDDLEWARES
 app.use(helmet()); // Help secure Express apps with various HTTP headers
 
-app.use(morgan('dev')); // 'tiny' // logs in terminal request description
+//ss We can set environment variables via command line like this:
+// $ export NODE_ENV=production // Mac
+// $ set NODE_ENV=production // Windows
+// by default NODE_ENV is 'development'
+// const nodeEnv = process.env.NODE_ENV;
+const nodeEnv = app.get('env'); // this is another way to get environment NODE_ENV variable
+if(nodeEnv === 'development'){
+    app.use(morgan('dev')); // 'tiny' // logs in terminal request description
+}
 
 // app.use(express.static('uploads')) // This is a simple way. Actually static content are served from the root of the site
 app.use('/images', express.static('uploads')); // with this we will have statically/publicly available 'uploads' folder (example: http://localhost:3000/images/1558704580_Chrysanthemum.jpg)
