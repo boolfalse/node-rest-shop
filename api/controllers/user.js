@@ -104,10 +104,12 @@ exports.login_user = (req, res, next) => {
 
     //ss another way for using Joi
     const result = Joi.validate(req.body, schema);
-    if (result.error) {
+    //ss here also we'll use Object Destruction for NodeJS specification
+    const { error } = result; // const error = result.error
+    if (error) {
         return res.status(500).json({
             success: false,
-            message: result.error.details[0].message
+            message: error.details[0].message
         });
     }
 

@@ -2,9 +2,11 @@
 // INITIALIZATIONS
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const loggingMiddleware = require('./api/middlewares/logging');
 
 const productRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
@@ -16,12 +18,23 @@ mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PASSWORD +
 });
 // mongoose.Promise = global.Promise; // For disabling terminal 'deprecated' warnings. NodeJS Promise implementation instead of the mongoose model
 
-// Middlewares
-app.use(morgan('dev'));
-app.use('/images', express.static('uploads')); //  with this we will have statically/publicly available 'uploads' folder (example: http://localhost:3000/images/1558704580_Chrysanthemum.jpg)
+// MIDDLEWARES
+app.use(helmet()); // Help secure Express apps with various HTTP headers
+
+app.use(morgan('dev')); // 'tiny' // logs in terminal request description
+
+// app.use(express.static('uploads')) // This is a simple way. Actually static content are served from the root of the site
+app.use('/images', express.static('uploads')); // with this we will have statically/publicly available 'uploads' folder (example: http://localhost:3000/images/1558704580_Chrysanthemum.jpg)
+
+// This is an express built-in middleware, that parses incoming requests with url encoded payloads
+// In another words, it's parses requests something like this "key1=value1&key2=value2" as body of request
+// app.use(express.urlencoded({ extended: true })); // this is a default way for express
 app.use(bodyParser.urlencoded({
     extended: false // true allows to parse extended body with rich data in it
+    // with 'true' we can pass arrays and complex objects using this middleware urlencoded format
 }));
+
+// This parses the body of a request to the JSON Object
 app.use(bodyParser.json());
 
 // Disallowing CORS errors
@@ -37,6 +50,8 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+app.use(loggingMiddleware);
 
 // Routes which should handle requests
 app.use('/products', productRoutes);
